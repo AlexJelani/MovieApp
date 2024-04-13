@@ -10,6 +10,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@dev-plugins/react-query": "^0.0.6",
     "@expo/ngrok": "^2.4.3",
     "@expo/vector-icons": "^14.0.0",
     "@react-navigation/native": "^6.1.7",
