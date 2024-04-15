@@ -29,7 +29,7 @@ const MovieDetails = () => {
         source={{ uri: 'https://image.tmdb.org/t/p/w500' + movie.backdrop_path }}
         style={{ width: '100%', height: 300 }}
       />
-      <Text style={{ fontSize: 24, fontWeight: '500', marginVertical:10 }}>{movie.title}</Text>
+      <Text style={{ fontSize: 24, fontWeight: '500', marginVertical: 10 }}>{movie.title}</Text>
       <Text style={{ fontSize: 16, fontWeight: '400' }}>{movie.overview}</Text>
 
     </View>
@@ -37,3 +37,4 @@ const MovieDetails = () => {
 };
 
 export default MovieDetails;
+
