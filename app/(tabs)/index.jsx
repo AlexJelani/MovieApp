@@ -1,54 +1,43 @@
-import { useQuery } from '@tanstack/react-query';
-import { Stack } from 'expo-router';
-import { StyleSheet, View, Text, FlatList, ActivityIndicator } from 'react-native';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
 
+import { fetchTopRatedMovies } from '../../api/movies';
 import MovieListItem from '../../components/MovieListItem';
-
-import { fetchTopRatedMovies } from '~/api/movies';
-
-export default function Home() {
-  const {
-    data: movies,
-    isLoading,
-    error,
-  } = useQuery({
+export default function TabOneScreen() {
+  const { data, isLoading, error, fetchNextPage } = useInfiniteQuery({
     queryKey: ['movies'],
     queryFn: fetchTopRatedMovies,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, pages) => pages.length + 1,
   });
 
-
   if (isLoading) {
-    return <ActivityIndicator/>;
+    return <ActivityIndicator />;
   }
+
   if (error) {
     return <Text>{error.message}</Text>;
   }
+  const movies = data?.pages?.flat();
+
   return (
-    <>
-      <Stack.Screen
-        options={{
-          title: 'Movies',
-          headerTitleAlign: 'center', // Center the title horizontally
+    <View style={styles.container}>
+      <FlatList
+        data={movies}
+        numColumns={2}
+        contentContainerStyle={{ gap: 5, padding: 5 }}
+        columnWrapperStyle={{ gap: 5 }}
+        renderItem={({ item }) => <MovieListItem movie={item} />}
+        onEndReached={() => {
+          fetchNextPage();
         }}
       />
-
-      <View style={styles.container}>
-        <FlatList
-          data={movies}
-          numColumns={2}
-          contentContainerStyle={{ gap: 5 }}
-          columnWrapperStyle={{ gap: 5 }}
-          renderItem={({ item }) => <MovieListItem movie={item} />}
-          keyExtractor={(item) => item.id}
-        />
-      </View>
-    </>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
   },
 });

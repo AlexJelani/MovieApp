@@ -1,9 +1,9 @@
 import '../translation'
 
 
+import { useReactQueryDevTools } from '@dev-plugins/react-query';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack } from 'expo-router';
-import { useReactQueryDevTools } from '@dev-plugins/react-query';
 
 const client = new QueryClient();
 export const unstable_settings = {
