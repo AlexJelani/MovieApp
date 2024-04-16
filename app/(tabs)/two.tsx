@@ -27,7 +27,7 @@ export default function Home() {
     <>
       <Stack.Screen
         options={{
-          title: 'Movies',
+          title: 'MoviesList',
           headerTitleAlign: 'center', // Center the title horizontally
         }}
       />
