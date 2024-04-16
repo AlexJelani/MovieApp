@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { Stack } from 'expo-router';
 import { StyleSheet, View, Text, FlatList, ActivityIndicator } from 'react-native';
 
@@ -7,13 +7,18 @@ import MovieListItem from '../../components/MovieListItem';
 import { fetchWatchListMovies } from '~/api/watchlist';
 
 export default function Home() {
+  // @ts-ignore
+  // @ts-ignore
   const {
-    data: movies,
+    data,
     isLoading,
     error,
-  } = useQuery({
+    fetchNextPage
+  } = useInfiniteQuery({
     queryKey: ['watchlist'],
     queryFn: fetchWatchListMovies,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, pages) => pages.length + 1,
   });
 
 
@@ -23,6 +28,8 @@ export default function Home() {
   if (error) {
     return <Text>{error.message}</Text>;
   }
+  const movies = data?.pages?.flat();
+
   return (
     <>
       <Stack.Screen
@@ -40,6 +47,9 @@ export default function Home() {
           columnWrapperStyle={{ gap: 5 }}
           renderItem={({ item }) => <MovieListItem movie={item} />}
           keyExtractor={(item) => item.id}
+          onEndReached={() => {
+            fetchNextPage();
+          }}
         />
       </View>
     </>
